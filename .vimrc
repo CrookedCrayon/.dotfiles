@@ -3,8 +3,12 @@
 """""""""""
 
 "TODO:
-"* redo comment hilight to add colors: 
+"* make comment hilight to add colors: 
 "// needs to be language specific (ie://! in c -> red)
+"
+"* fix deleting whole line
+"
+"* 
 
 set nu
 :highlight LineNr ctermfg=darkgrey
@@ -16,6 +20,8 @@ let f_name = expand('%:e')
 
 "Customizing behaviour of vim depending on filetype:
 if(f_name ==# 'c')
+    set showmatch
+    :match DiffAdd /\/\/!.*/ "highlights '//!'
     :inoremap ( ()<LEFT>
     :inoremap [ []<LEFT>
     :inoremap { {}<LEFT>
@@ -23,7 +29,6 @@ if(f_name ==# 'c')
     :inoremap ' ''<LEFT>    
 
 elseif(f_name ==# 'py')
-    :inoremap ( ()<LEFT>
     :inoremap [ []<LEFT>
     :inoremap { {}<LEFT>
     :inoremap " ""<LEFT>
@@ -31,16 +36,19 @@ elseif(f_name ==# 'py')
 
 elseif(f_name ==# 'tex')
     :inoremap ( ()<LEFT>
+    set showmatch
+    :inoremap ( ()<LEFT>
     :inoremap [ []<LEFT>
     :inoremap { {}<LEFT> 
     :inoremap $ $$<LEFT>
 
 elseif(f_name ==# 'php' || f_name ==# 'css' || f_name ==# 'html')
+    set showmatch
     :inoremap < <><LEFT>
     :inoremap ( ()<LEFT>
 
 elseif(f_name ==# 'txt')
-    "Does not need anything extra!
+    "Does not need anything extra
 
 else
     :inoremap ( ()<LEFT>
@@ -52,8 +60,8 @@ else
 endif
 
 " For moving lines up and down
-:inoremap <M-DOWN> <ESC>:m+<CR>i
 :inoremap <M-UP> <ESC>:m-2<CR>i
+:inoremap <M-DOWN> <ESC>:m+<CR>i
 
 "For deleting whole line
 ":inoremap <M-d> <ESC> -- does not work
