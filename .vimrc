@@ -3,25 +3,27 @@
 """""""""""
 
 "TODO:
-"* make comment hilight to add colors: 
-"// needs to be language specific (ie://! in c -> red)
+"* finish comment hilighting: '#!','#TODO:', ... 
 "
-"* fix deleting whole line
+"* fix deleting one word
 "
 "* 
 
-set nu
-:highlight LineNr ctermfg=darkgrey
-set ruler "Displays 'row,column' position
-set tabstop=4 "Show existing tab with 4 spaces width
-set expandtab "On pressing <TAB> insert 4 spaces 
+
+"Basic options:
+set nu                              "Shows line numbers
+:highlight LineNr ctermfg=darkgrey  "Changed color of line numbers
+set ruler                           "Displays 'row,column' position at bottom right
+set tabstop=4                       "Show existing tab with 4 spaces width
+set expandtab                       "On pressing <TAB> insert 4 spaces 
 
 let f_name = expand('%:e')
 
 "Customizing behaviour of vim depending on filetype:
-if(f_name ==# 'c')
-    set showmatch
-    :match DiffAdd /\/\/!.*/ "highlights '//!'
+if(f_name ==# 'c' || f_name ==# 'h' || f_name ==# 'cpp' || f_name ==# 'hpp')
+    :set showmatch
+    :match DiffText /\/\/!.*/   "highlights '//!' until EOL
+    :match Todo /\/\/TODO:/     "highlights '//TODO:' only
     :inoremap ( ()<LEFT>
     :inoremap [ []<LEFT>
     :inoremap { {}<LEFT>
@@ -29,23 +31,27 @@ if(f_name ==# 'c')
     :inoremap ' ''<LEFT>    
 
 elseif(f_name ==# 'py')
+    :match DiffText /#!.*/
+    :match Todo /#TODO:/
+    :inoremap ( ()<LEFT>
     :inoremap [ []<LEFT>
     :inoremap { {}<LEFT>
     :inoremap " ""<LEFT>
     :inoremap ' ''<LEFT> 
 
 elseif(f_name ==# 'tex')
-    :inoremap ( ()<LEFT>
-    set showmatch
+    :set showmatch
     :inoremap ( ()<LEFT>
     :inoremap [ []<LEFT>
     :inoremap { {}<LEFT> 
     :inoremap $ $$<LEFT>
 
 elseif(f_name ==# 'php' || f_name ==# 'css' || f_name ==# 'html')
-    set showmatch
+    :set showmatch
     :inoremap < <><LEFT>
     :inoremap ( ()<LEFT>
+
+elseif(f_name ==# 'md') "Markdown language
 
 elseif(f_name ==# 'txt')
     "Does not need anything extra
@@ -59,10 +65,19 @@ else
 
 endif
 
-" For moving lines up and down
+" Moves lines up and down:
 :inoremap <M-UP> <ESC>:m-2<CR>i
 :inoremap <M-DOWN> <ESC>:m+<CR>i
 
-"For deleting whole line
-":inoremap <M-d> <ESC> -- does not work
+" Deletes whole line:
+:noremap! <C-S-k> <ESC>ddi
+
+" Deletes one word: 
+:noremap! <C-BS> dwi
+
+
+
+
+
+
 
