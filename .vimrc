@@ -3,14 +3,17 @@
 """""""""""
 
 "TODO:
-"* finish comment hilighting: '#!','#TODO:', ... 
+"* finish/fix comment hilighting: '#!','#TODO:', ... 
 "
 "* fix deleting one word
 "
 "* 
 
 
-"Basic options:
+"Global options:
+let g:gruvbox_contrast_dark='hard'
+:colorscheme gruvbox
+set background=dark
 set nu                              "Shows line numbers
 :highlight LineNr ctermfg=darkgrey  "Changed color of line numbers
 set ruler                           "Displays 'row,column' position at bottom right
@@ -20,7 +23,7 @@ set expandtab                       "On pressing <TAB> insert 4 spaces
 let f_name = expand('%:e')
 
 "Customizing behaviour of vim depending on filetype:
-if(f_name ==# 'c' || f_name ==# 'h' || f_name ==# 'cpp' || f_name ==# 'hpp')
+if(f_name ==# 'c' || f_name ==# 'h' || f_name ==# 'cpp' || f_name ==# 'hpp' || f_name ==# 'php')
     :set showmatch
     :match DiffText /\/\/!.*/   "highlights '//!' until EOL
     :match Todo /\/\/TODO:/     "highlights '//TODO:' only
@@ -46,7 +49,7 @@ elseif(f_name ==# 'tex')
     :inoremap { {}<LEFT> 
     :inoremap $ $$<LEFT>
 
-elseif(f_name ==# 'php' || f_name ==# 'css' || f_name ==# 'html')
+elseif(f_name ==# 'css' || f_name ==# 'html')
     :set showmatch
     :inoremap < <><LEFT>
     :inoremap ( ()<LEFT>
@@ -74,10 +77,3 @@ endif
 
 " Deletes one word: 
 :noremap! <C-BS> dwi
-
-
-
-
-
-
-
